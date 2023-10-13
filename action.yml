@@ -41,7 +41,7 @@ runs:
       run: |
         echo "::group::..."
         REPORT="$(mktemp)"
-        echo "REPORT_PATH=$REPORT" >> $GITHUB_OUTPUT
+        echo "report-path=$REPORT" >> $GITHUB_OUTPUT
         args=()
         if [ ${{ inputs.verbose }} = true ]; then args+=('-v'); fi
         if [ ${{ inputs.job-summary }} = true ]; then args+=("--md=$REPORT"); fi
@@ -52,6 +52,7 @@ runs:
         ${{ inputs.custom-pytest }} "${args[@]}"
       shell: bash -el {0}  # use login shell to source .bashrc for environments
     - name: Add report to summary
+      id: summary
       # run even if pytest fails
       if: always() && inputs.job-summary == 'true'
       run: |
@@ -66,9 +67,12 @@ runs:
           echo "</details>" >> "$FINAL_REPORT"
         fi
         cat "$FINAL_REPORT" >> "$GITHUB_STEP_SUMMARY"
+        echo final-report="$FINAL_REPORT" >> $GITHUB_OUTPUT
         echo "::endgroup::"
         echo
         echo "====================================================================================="
         echo Markdown summaries: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         echo "====================================================================================="
       shell: bash
+outputs:
+  final-report: ${{ steps.summary.outputs.final-report }}
