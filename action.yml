@@ -34,9 +34,9 @@ inputs:
     required: false
     default: 'true'
 outputs:
-  final-report:
-    description: "Markdown of final report"
-    value: ${{ steps.summary.outputs.final-report }}
+  final-report-file:
+    description: "Filename of final report"
+    value: ${{ steps.summary.outputs.final-report-file }}
 runs:
   using: "composite"
   steps:
@@ -71,7 +71,7 @@ runs:
           echo "</details>" >> "$FINAL_REPORT"
         fi
         cat "$FINAL_REPORT" >> "$GITHUB_STEP_SUMMARY"
-        echo final-report="$FINAL_REPORT" >> $GITHUB_OUTPUT
+        echo "final-report-file=$FINAL_REPORT" >> $GITHUB_OUTPUT
         echo "::endgroup::"
         echo
         echo "====================================================================================="
