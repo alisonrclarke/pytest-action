@@ -42,7 +42,6 @@ runs:
         echo "::group::..."
         REPORT="$(mktemp)"
         echo "REPORT_PATH=$REPORT" >> $GITHUB_OUTPUT
-        cat $GITHUB_OUTPUT
         args=()
         if [ ${{ inputs.verbose }} = true ]; then args+=('-v'); fi
         if [ ${{ inputs.job-summary }} = true ]; then args+=("--md=$REPORT"); fi
