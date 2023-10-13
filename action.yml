@@ -33,6 +33,10 @@ inputs:
     description: Add 'Click to expand' to the report
     required: false
     default: 'true'
+outputs:
+  final-report:
+    description: "Markdown of final report"
+    value: ${{ steps.summary.outputs.final-report }}
 runs:
   using: "composite"
   steps:
@@ -74,5 +78,3 @@ runs:
         echo Markdown summaries: "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         echo "====================================================================================="
       shell: bash
-outputs:
-  final-report: ${{ steps.summary.outputs.final-report }}
